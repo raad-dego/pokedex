@@ -28,13 +28,13 @@ func getCommands() map[string]cliCommand {
 		"map": {
 			name:        "map",
 			description: "Displays the names of 20 location areas in the Pokemon world.",
-			// callback:    callbackMap,
+			callback:    callbackMap,
 		},
-		"mapb": {
-			name:        "mapb",
-			description: "Displays the previous 20 location areas in the Pokemon world.",
-			// callback:    callbackMapb,
-		},
+		// "mapb": {
+		// 	name:        "mapb",
+		// 	description: "Displays the previous 20 location areas in the Pokemon world.",
+		// 	// callback:    callbackMapb,
+		// },
 	}
 }
 func startRepl() {
@@ -44,7 +44,9 @@ func startRepl() {
 		scanner.Scan()
 		input := scanner.Text()
 		cleaned := cleanInput(input)
-
+		if len(cleaned) == 0 {
+			continue
+		}
 		commandName := cleaned[0]
 		availableCommands := getCommands()
 		command, ok := availableCommands[commandName]
