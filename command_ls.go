@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 )
 
@@ -23,13 +22,11 @@ func callbackExit(cfg *config) error {
 	return nil
 }
 
-var nextURL string // Global variable to store the Next URL for pagination
 
 func callbackMap(cfg *config) error {
-
 	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.nextLocationAreaURL)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	fmt.Println("Location Area")
 	for _, loc := range resp.Results {
@@ -46,7 +43,7 @@ func callbackMapb(cfg *config) error {
 	}
 	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.previousLocationAreaURL)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	fmt.Println("Location Area")
 	for _, loc := range resp.Results {
