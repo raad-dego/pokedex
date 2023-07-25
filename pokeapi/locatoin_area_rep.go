@@ -17,7 +17,6 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 	// Check the cache
 	dat, ok := c.cache.Get(fullURL)
 	if ok {
-		fmt.Println("cache hit")
 		locationAreasResp := LocationAreasResp{} // instance of the struct
 		err := json.Unmarshal(dat, &locationAreasResp)
 		if err != nil {
@@ -51,8 +50,6 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 	if err != nil {
 		return LocationAreasResp{}, err
 	}
-
-	fmt.Println("cache miss")
 	return locationAreasResp, nil
 }
 

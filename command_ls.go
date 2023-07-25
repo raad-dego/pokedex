@@ -97,14 +97,46 @@ func callbackCatch(cfg *config, args ...string) error {
 	if err != nil {
 		return err
 	}
-	pokemonCatched := CatchProbability(pokemon.BaseExperience)
-	fmt.Printf("throwing a Pokeball at %s..\n", pokemon.Name)
-	if pokemonCatched {
-		CatchPokemon(pokemon.Name, pokemon.BaseExperience)
+	pokemonCatchAttemp := CatchProbability(pokemon.BaseExperience)
+	fmt.Printf("throwing a Pokeball at %s...\n", pokemon.Name)
+	if pokemonCatchAttemp {
+		cfg.caughtPokemons[pokemonName] = pokemon
 		fmt.Printf("%s was caught!\n", pokemon.Name)
 		return nil
 
 	} else {
-		return fmt.Errorf("%s escaped.\n", pokemon.Name)
+		return fmt.Errorf("%s escaped.", pokemon.Name)
 	}
+}
+
+func callbackInspect(cfg *config, args ...string) error {
+	if len(args) != 1 {
+		errors.New("no pokemon name provided")
+	}
+
+	pokemonName := args[0]
+
+	pokemon, ok := cfg.caughtPokemons[pokemonName]
+	if !ok {
+		return fmt.Errorf("you haven't caught %s\n", pokemonName)
+	}
+	fmt.Printf("name: %s\n", pokemon.Name)
+	fmt.Printf("experience: %v\n", pokemon.BaseExperience)
+	fmt.Printf("Height: %v\n", pokemon.Height)
+	fmt.Printf("Weight: %v\n", pokemon.Weight)
+	for _, stat := range pokemon.Stats {
+		fmt.Printf("%s: %v\n", stat.Stat.Name, stat.BaseStat)
+	}
+	return nil
+}
+
+func callbackPokedex(cfg *config, args ...string) error {
+	if len(args) != 0 {
+		return errors.New("unnecesary details provided")
+	}
+	fmt.Printf("your Pokedex contains the following pokemon:\n")
+	for _, p := range cfg.caughtPokemons {
+		fmt.Printf(" - %s\n", p.Name)
+	}
+	return nil
 }

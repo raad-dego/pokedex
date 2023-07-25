@@ -37,7 +37,5 @@ func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
 	if err != nil {
 		return Pokemon{}, err
 	}
-
-	fmt.Println("cache miss")
 	return pokemon, nil
 }
